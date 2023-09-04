@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score
 # Carregar a base de dados
 df = pd.read_csv('base_dados.csv')
 
-# Converter variáveis categóricas em numéricas usando codificação one-hot
+# Converter variáveis categóricas em numéricas usando codificação one-hot, ex: 1: true e 0: False
 df_encoded = pd.get_dummies(df, columns=['gênero','meta','restricao'])
 
 # Mapear as classificações para valores numéricos 
@@ -49,15 +49,19 @@ class Previsao:
         # Carregar o modelo treinado
         modelo = DecisionTreeClassifier()
         
-        # Carregar a base de dados e converter variáveis categóricas em numéricas usando codificação one-hot
+        # Carregar a base de dados
         df = pd.read_csv('base_dados.csv')
         
+        # converte variáveis categóricas em numéricas usando codificação one-hot, em 1 True e 0 False
         df_encoded = pd.get_dummies(df, columns=['gênero','meta','restricao'])
+        
+        # Mapeia os níveis de classificação
         class_mapping = {
             'intensivo': 2,
             'intermediário': 1,
             'menos_intensivo': 0
         }
+        # Convertermos as classificações conforme o class_mapping
         df_encoded['classificação'] = df_encoded['classificação'].map(class_mapping)
         
         # Separar features e alvo
@@ -96,13 +100,15 @@ class Previsao:
         return self.classificacao
 
 
+# Dados para teste de Previsão
 genero = "masculino"
-idade = 42
+idade = 40
 peso = 55
 meta = "hipertrofia"
 altura = 1.75
-restricao = "diabetes"
+restricao = "problema_fisico"
 
+# Executando uma previsão com os dados de teste
 previsao = Previsao(genero, idade, peso, altura, meta,restricao)
 texto_previsao = previsao.formatar_previsao()
 print("Indíce da classificação: ",texto_previsao)
