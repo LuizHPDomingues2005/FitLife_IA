@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
+import joblib
 
 # Carregar a base de dados
 df = pd.read_csv('base_dados.csv')
@@ -33,6 +34,9 @@ y_pred = modelo.predict(X_test)
 precisao = accuracy_score(y_test, y_pred)
 print("Precisão do modelo:", precisao)
 
+# Salvar o modelo treinado em um arquivo
+joblib.dump(modelo, 'modelo_decision_tree.pkl')
+
 
 #------------ Teste de Previsão -----------------------
 class Previsao:
@@ -46,8 +50,10 @@ class Previsao:
         self.classificacao = self.fazer_previsao()
 
     def fazer_previsao(self):
-        # Carregar o modelo treinado
-        modelo = DecisionTreeClassifier()
+        # # Carregar o modelo treinado
+        # modelo = DecisionTreeClassifier()
+        # Carregar o modelo treinado a partir do arquivo
+        modelo = joblib.load('modelo_decision_tree.pkl')
         
         # Carregar a base de dados
         df = pd.read_csv('base_dados.csv')
