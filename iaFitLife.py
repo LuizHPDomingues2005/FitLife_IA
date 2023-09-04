@@ -4,10 +4,10 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 
 # Carregar a base de dados
-df = pd.read_csv('registros.csv')
+df = pd.read_csv('base_dados.csv')
 
 # Converter variáveis categóricas em numéricas usando codificação one-hot
-df_encoded = pd.get_dummies(df, columns=['gênero','meta'])
+df_encoded = pd.get_dummies(df, columns=['gênero','meta','restricao'])
 
 # Mapear as classificações para valores numéricos 
 class_mapping = {
@@ -36,12 +36,13 @@ print("Precisão do modelo:", precisao)
 
 #------------ Teste de Previsão -----------------------
 class Previsao:
-    def __init__(self, genero, idade, peso, altura, meta):
+    def __init__(self, genero, idade, peso, altura, meta, restricao):
         self.genero = genero
         self.idade = idade
         self.peso = peso
         self.altura = altura
         self.meta = meta
+        self.restricao = restricao
         self.classificacao = self.fazer_previsao()
 
     def fazer_previsao(self):
@@ -49,8 +50,9 @@ class Previsao:
         modelo = DecisionTreeClassifier()
         
         # Carregar a base de dados e converter variáveis categóricas em numéricas usando codificação one-hot
-        df = pd.read_csv('registros.csv')
-        df_encoded = pd.get_dummies(df, columns=['gênero','meta'])
+        df = pd.read_csv('base_dados.csv')
+        
+        df_encoded = pd.get_dummies(df, columns=['gênero','meta','restricao'])
         class_mapping = {
             'intensivo': 2,
             'intermediário': 1,
@@ -72,8 +74,13 @@ class Previsao:
             'altura': [self.altura],
             'gênero_feminino': [1 if self.genero == 'feminino' else 0],
             'gênero_masculino': [1 if self.genero == 'masculino' else 0],
+            'meta_emagrecimento': [1 if self.meta == 'emagrecimento' else 0],
             'meta_hipertrofia': [1 if self.meta == 'hipertrofia' else 0],
-            'meta_emagrecimento': [1 if self.meta == 'emagrecimento' else 0]
+            'restricao_diabetes': [1 if self.restricao == 'diabetes' else 0],
+            'restricao_doenca_respiratoria': [1 if self.restricao == 'doenca_respiratoria' else 0],
+            'restricao_nenhuma': [1 if self.restricao == 'nenhuma' else 0],
+            'restricao_outro': [1 if self.restricao == 'outro' else 0],
+            'restricao_problema_fisico': [1 if self.restricao == 'problema_físico' else 0]
         })
         previsao = modelo.predict(X_pred)
         
@@ -88,13 +95,14 @@ class Previsao:
             print("Previsão de plano escolhida é: Menos Intensivo")
         return self.classificacao
 
-# Exemplo de uso
+
 genero = "masculino"
 idade = 42
 peso = 55
-meta = "emagrecimento"
+meta = "hipertrofia"
 altura = 1.75
+restricao = "diabetes"
 
-previsao = Previsao(genero, idade, peso, meta, altura)
+previsao = Previsao(genero, idade, peso, altura, meta,restricao)
 texto_previsao = previsao.formatar_previsao()
 print("Indíce da classificação: ",texto_previsao)

@@ -129,7 +129,7 @@ def add_rows_to_csv(filename, num_records_to_add):
 num_records_to_add = 1000000
 
 # Nome do arquivo CSV existente
-filename = 'registros2.csv'
+filename = 'base_dados.csv'
 
 # Chamar o método para adicionar linhas ao arquivo CSV
 add_rows_to_csv(filename, num_records_to_add)
@@ -142,7 +142,7 @@ def add_rows_to_csv(filename, num_records_to_add):
     # Abrir o arquivo CSV em modo de adição
     with open(filename, 'a', newline='') as csvfile:
         # Definir os nomes das colunas
-        fieldnames = ['gênero', 'idade', 'peso', 'altura', 'meta','classificação']
+        fieldnames = ['gênero', 'idade', 'peso', 'altura', 'meta','restricao','classificação']
 
         # Inicializar o escritor CSV
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -163,6 +163,7 @@ def add_rows_to_csv(filename, num_records_to_add):
                 'peso': peso,
                 'altura': altura,
                 'meta': meta,
+                'restricao': restricao,
                 'classificação': classificacao
             })
 
@@ -172,7 +173,7 @@ def add_rows_to_csv(filename, num_records_to_add):
 num_records_to_add = 100000
 
 # Nome do arquivo CSV existente
-filename = 'registros.csv'
+filename = 'base_dados.csv'
 
 # Chamar o método para adicionar linhas ao arquivo CSV
 add_rows_to_csv(filename, num_records_to_add)
